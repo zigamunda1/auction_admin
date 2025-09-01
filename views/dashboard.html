@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 페이지 헤더 -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                관리자 대시보드
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                경매 시스템의 전체 현황을 확인하세요 (포트: 8020)
+            </p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <span class="text-sm text-gray-500">
+                마지막 업데이트: {{ moment().format('YYYY-MM-DD HH:mm:ss') }}
+            </span>
+        </div>
+    </div>
+
+    <!-- 통계 카드 -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- 사용자 수 -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">총 사용자 수</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ stats.userCount }}명</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="/users" class="font-medium text-blue-600 hover:text-blue-500">
+                        사용자 관리 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상품 수 -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">총 상품 수</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ stats.productCount }}개</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="/products" class="font-medium text-green-600 hover:text-green-500">
+                        상품 관리 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 입찰 수 -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">총 입찰 수</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ stats.bidCount }}건</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="/bids" class="font-medium text-yellow-600 hover:text-yellow-500">
+                        입찰 관리 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 최근 활동 -->
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <!-- 최근 사용자 -->
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">최근 가입 사용자</h3>
+                <div class="space-y-3">
+                    {% for user in recentUsers %}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-blue-600">{{ user.nick[0] }}</span>
+                                </div>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">{{ user.nick }}</p>
+                                <p class="text-sm text-gray-500">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            {{ user.createdAt.toDateString() }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <a href="/users" class="text-sm text-blue-600 hover:text-blue-500">전체 보기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 최근 상품 -->
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">최근 등록 상품</h3>
+                <div class="space-y-3">
+                    {% for product in recentProducts %}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-green-600">📦</span>
+                                </div>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
+                                <p class="text-sm text-gray-500">{{ product.Owner.nick }} • {{ product.price.toLocaleString() }}원</p>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            {{ product.createdAt.toDateString() }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <a href="/products" class="text-sm text-green-600 hover:text-green-500">전체 보기 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 최근 입찰 -->
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">최근 입찰</h3>
+                <div class="space-y-3">
+                    {% for bid in recentBids %}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-yellow-600">💰</span>
+                                </div>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">{{ bid.Good.name }}</p>
+                                <p class="text-sm text-gray-500">{{ bid.User.nick }} • {{ bid.bid.toLocaleString() }}원</p>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            {{ bid.createdAt.toDateString() }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <a href="/bids" class="text-sm text-yellow-600 hover:text-yellow-500">전체 보기 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

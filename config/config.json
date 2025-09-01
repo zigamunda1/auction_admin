@@ -1,0 +1,18 @@
+{
+  "development": {
+    "username": "root",
+    "password": "0000",
+    "database": "auction",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3306
+  },
+  "production": {
+    "username": "root",
+    "password": "0000",
+    "database": "auction",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3306
+  }
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ title }}{% endblock %} - 경매 관리자</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        danger: '#EF4444',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        info: '#3B82F6',
+                        admin: '#1F2937'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- 네비게이션 바 -->
+    <nav class="bg-admin text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold">🎯 경매 관리자</h1>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="/" class="{% if title == '관리자 대시보드' %}text-blue-300{% else %}text-gray-300 hover:text-white{% endif %} px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            대시보드
+                        </a>
+                        <a href="/users" class="{% if title == '사용자 관리' %}text-blue-300{% else %}text-gray-300 hover:text-white{% endif %} px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            사용자 관리
+                        </a>
+                        <a href="/products" class="{% if title == '상품 관리' %}text-blue-300{% else %}text-gray-300 hover:text-white{% endif %} px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            상품 관리
+                        </a>
+                        <a href="/bids" class="{% if title == '입찰 관리' %}text-blue-300{% else %}text-gray-300 hover:text-white{% endif %} px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            입찰 관리
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-300">관리자: {{ admin.username }}</span>
+                        <a href="/auth/logout" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                            로그아웃
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-gray-500">
+                <p>&copy; 2024 경매 관리자 시스템. All rights reserved.</p>
+                <p class="mt-1">포트: 8020 | 별도 관리자 시스템</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 삭제 확인 함수
+        function confirmDelete(type, id, name) {
+            if (confirm(`${name}을(를) 정말 삭제하시겠습니까?`)) {
+                fetch(`/${type}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('삭제 중 오류가 발생했습니다: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('삭제 중 오류가 발생했습니다.');
+                });
+            }
+        }
+
+        // 페이지 로딩 시 알림 표시
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                alert('오류: ' + decodeURIComponent(error));
+            }
+        };
+    </script>
+</body>
+</html>
