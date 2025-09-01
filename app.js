@@ -59,9 +59,10 @@ app.use((err, req, res, next) => {
 });
 
 // 서버 시작
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🎯 Auction Admin Server is running on port ${PORT}`);
-  console.log(`📊 Admin Dashboard: http://localhost:${PORT}`);
+  console.log(`📊 Admin Dashboard: http://54.180.29.240:${PORT}`);
+  console.log(`🔗 Public Access: http://54.180.29.240:${PORT}`);
 });
 
 module.exports = app;
