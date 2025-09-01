@@ -3,14 +3,14 @@
        "username": "dbtest1234",
        "password": "1234",
        "database": "auction",
-       "host": "localhost",
+       "host": "54.180.29.240",
        "dialect": "mysql"
      },
      "production": {
        "username": "dbtest1234",
        "password": "1234",
        "database": "auction",
-       "host": "localhost",
+       "host": "54.180.29.240",
        "dialect": "mysql"
      }
   }

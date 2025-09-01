@@ -1,0 +1,185 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 페이지 헤더 -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                상품 관리
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                등록된 상품 목록을 확인하고 관리하세요
+            </p>
+        </div>
+    </div>
+
+    <!-- 상품 목록 테이블 -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">상품 목록</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                총 {{ products.length }}개의 상품이 등록되어 있습니다.
+            </p>
+        </div>
+        
+        {% if products.length > 0 %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            상품명
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            소유자
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            경매 시작가
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            최고 입찰가
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            입찰 수
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            등록일
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            관리
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for product in products %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <div class="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center">
+                                        <span class="text-lg">📦</span>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ product.name }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        ID: {{ product.id }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">
+                                {% if product.ownerNick %}
+                                    {{ product.ownerNick }}
+                                {% else %}
+                                    알 수 없음
+                                {% endif %}
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                소유자 ID: {{ product.OwnerId }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                                {{ product.price.toLocaleString() }}원
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                시작가
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                                {% if product.highestBid %}
+                                    {{ product.highestBid.toLocaleString() }}원
+                                {% else %}
+                                    입찰 없음
+                                {% endif %}
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                {% if product.highestBid %}
+                                    최고가
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                {% if product.bidCount > 0 %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ product.bidCount }}건
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ product.createdAt.toDateString() }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button onclick="confirmDelete('products', {{ product.id }}, '{{ product.name }}')" 
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                삭제
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 페이지네이션 -->
+        {% if pagination.totalPages > 1 %}
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div class="flex-1 flex justify-between sm:hidden">
+                {% if pagination.hasPrev %}
+                <a href="?page={{ pagination.prevPage }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    이전
+                </a>
+                {% endif %}
+                {% if pagination.hasNext %}
+                <a href="?page={{ pagination.nextPage }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    다음
+                </a>
+                {% endif %}
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        <span class="font-medium">{{ pagination.currentPage }}</span> / 
+                        <span class="font-medium">{{ pagination.totalPages }}</span> 페이지
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                        {% if pagination.hasPrev %}
+                        <a href="?page={{ pagination.prevPage }}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            이전
+                        </a>
+                        {% endif %}
+                        {% if pagination.hasNext %}
+                        <a href="?page={{ pagination.nextPage }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            다음
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="px-4 py-12 text-center">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-gray-100 mb-4">
+                <span class="text-2xl">📦</span>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">등록된 상품이 없습니다</h3>
+            <p class="text-gray-500">아직 등록된 경매 상품이 없습니다.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

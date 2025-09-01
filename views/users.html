@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 페이지 헤더 -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                사용자 관리
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                등록된 사용자 목록을 확인하고 관리하세요
+            </p>
+        </div>
+    </div>
+
+    <!-- 사용자 목록 -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">사용자 목록</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                총 {{ users.length }}명의 사용자가 등록되어 있습니다.
+            </p>
+        </div>
+        <ul class="divide-y divide-gray-200">
+            {% for user in users %}
+            <li>
+                <div class="px-4 py-4 flex items-center justify-between hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-sm font-medium text-blue-600">{{ user.nick[0] }}</span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center">
+                                <p class="text-sm font-medium text-gray-900">{{ user.nick }}</p>
+                                <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    활성
+                                </span>
+                            </div>
+                            <div class="mt-1">
+                                <p class="text-sm text-gray-500">{{ user.email }}</p>
+                            </div>
+                            <div class="mt-1 flex items-center text-sm text-gray-500">
+                                <span>가입일: {{ user.createdAt.toDateString() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">{{ user.money.toLocaleString() }}원</p>
+                            <p class="text-xs text-gray-500">보유 자산</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="confirmDelete('users', {{ user.id }}, '{{ user.nick }}')" 
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition duration-200">
+                                삭제
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

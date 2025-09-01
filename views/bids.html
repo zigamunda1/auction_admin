@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 페이지 헤더 -->
+    <div class="md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                입찰 관리
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">
+                입찰 내역을 확인하고 관리하세요
+            </p>
+        </div>
+    </div>
+
+    <!-- 입찰 목록 -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">입찰 목록</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                총 {{ bids.length }}건의 입찰이 있습니다.
+            </p>
+        </div>
+        <ul class="divide-y divide-gray-200">
+            {% for bid in bids %}
+            <li>
+                <div class="px-4 py-4 flex items-center justify-between hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <span class="text-sm font-medium text-yellow-600">💰</span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center">
+                                <p class="text-sm font-medium text-gray-900">{{ bid.Good.name }}</p>
+                            </div>
+                            <div class="mt-1">
+                                <p class="text-sm text-gray-500">입찰자: {{ bid.User.nick }}</p>
+                            </div>
+                            <div class="mt-1">
+                                <p class="text-sm text-gray-500">메시지: {{ bid.msg }}</p>
+                            </div>
+                            <div class="mt-1 flex items-center text-sm text-gray-500">
+                                <span>입찰일: {{ bid.createdAt.toDateString() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">{{ bid.bid.toLocaleString() }}원</p>
+                            <p class="text-xs text-gray-500">입찰가</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
